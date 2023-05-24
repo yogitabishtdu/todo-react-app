@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+
+import {useState} from "react";
 
 function App() {
+  const[newitem, setNewitem] = useState("");
+  const[items, setItems] = useState([]);
+
+  function Additems(){
+    if(!newitem){
+      alert("You have to enter new task")
+      return
+    }
+
+    const item = {
+      id: Math.floor(Math.random()*10000),
+      value: newitem
+    };
+    setItems((oldlist)=> [...oldlist, item]);
+    setNewitem("");
+  };
+   function Deleteitem(id){
+    const newarray2 = items.filter((y)=> y.id !==id);
+    setItems(newarray2);
+   }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>My First react App</h1>
+      <input type="text" value={newitem} placeholder="Add new task here" onChange={(e)=>setNewitem(e.target.value)} />
+      <button onClick={Additems}>Add task</button>
+      <ul>
+       {
+        items.map((x)=>{
+          return(
+          <li key={x.id}>{x.value}
+          <button onClick={()=>Deleteitem(x.id)}>XX</button>
+          </li>
+        )})
+       }
+     </ul>
+   </>
   );
 }
 
